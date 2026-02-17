@@ -5,7 +5,6 @@ namespace builder
 {
     public partial class MainForm : Form
     {
-        private House currentHouse;
         public MainForm()
         {
             InitializeComponent();
@@ -31,6 +30,8 @@ namespace builder
             nud_HouseWidth.Minimum = 2;
             nud_HouseWidth.Maximum = 10;
             nud_HouseWidth.Value = 3;
+            rb_withBuilder.Checked = true;
+            rb_withoutBuilder.Checked = false;
             UpdateArea();
         }
         private void nud_ValueChanged(object sender, EventArgs e)
@@ -48,19 +49,62 @@ namespace builder
         {
             string type = cmb_HouseType.SelectedItem.ToString();
             string material = cmb_WallMaterial.SelectedItem.ToString();
-            double lenght = (double)nud_HouseLength.Value;
+            double length = (double)nud_HouseLength.Value;
             double width = (double)nud_HouseWidth.Value;
-            IHouseBuilder builder;
-            switch (type) {
-                case "FancyHouse": builder = new FancyHouseBuilder(); break;
-                case "PoolHouse": builder = new PoolHouseBuilder(); break;
-                case "GardenHouse": builder = new GardenHouseBuilder(); break;
-                case "GarageHouse": builder = new GarageHouseBuilder(); break;
-                default: builder = new PoorHouseBuilder(); break;
+            House currentHouse;
+            if (rb_withBuilder.Checked)
+            {
+                IHouseBuilder builder;
+                switch (type)
+                {
+                    case "FancyHouse": builder = new FancyHouseBuilder(); break;
+                    case "PoolHouse": builder = new PoolHouseBuilder(); break;
+                    case "GardenHouse": builder = new GardenHouseBuilder(); break;
+                    case "GarageHouse": builder = new GarageHouseBuilder(); break;
+                    default: builder = new PoorHouseBuilder(); break;
+                }
+                Director director = new Director();
+                director.Construct(builder, length, width, material);
+                currentHouse = builder.GetResult();
             }
-            Director director = new Director();
-            director.Construct(builder, lenght, width, material);
-            currentHouse = builder.GetResult();
+            else
+            {
+                currentHouse = new House
+                {
+                    Width = width,
+                    Length = length,
+                    WallMaterial = material
+                };
+                switch (type)
+                {
+                    case "FancyHouse":
+                        currentHouse.HasPool = true;
+                        currentHouse.HasGarage = true;
+                        currentHouse.HasGarden = true;
+                        currentHouse.HasStatue = true;
+                        break;
+                    case "PoolHouse":
+                        currentHouse.HasPool = true;
+                        currentHouse.HasGarage = false;
+                        currentHouse.HasGarden = false;
+                        currentHouse.HasStatue = false;
+                        break;
+                    case "GardenHouse":
+                        currentHouse.HasPool = false;
+                        currentHouse.HasGarage = false;
+                        currentHouse.HasGarden = true;
+                        currentHouse.HasStatue = false;
+                        break;
+                    case "GarageHouse":
+                        currentHouse.HasPool = false;
+                        currentHouse.HasGarage = true;
+                        currentHouse.HasGarden = false;
+                        currentHouse.HasStatue = false;
+                        break;
+                    default:
+                        break;
+                }
+            }
             BuildForm buildform = new BuildForm(currentHouse);
             buildform.Show();
         }

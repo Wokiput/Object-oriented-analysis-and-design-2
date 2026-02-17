@@ -38,6 +38,8 @@
             nud_HouseWidth = new NumericUpDown();
             lbl_area = new Label();
             btn_Build = new Button();
+            rb_withBuilder = new RadioButton();
+            rb_withoutBuilder = new RadioButton();
             ((System.ComponentModel.ISupportInitialize)nud_HouseLength).BeginInit();
             ((System.ComponentModel.ISupportInitialize)nud_HouseWidth).BeginInit();
             SuspendLayout();
@@ -129,11 +131,35 @@
             btn_Build.UseVisualStyleBackColor = true;
             btn_Build.Click += btn_Build_Click;
             // 
+            // rb_withBuilder
+            // 
+            rb_withBuilder.AutoSize = true;
+            rb_withBuilder.Location = new Point(21, 233);
+            rb_withBuilder.Name = "rb_withBuilder";
+            rb_withBuilder.Size = new Size(97, 19);
+            rb_withBuilder.TabIndex = 11;
+            rb_withBuilder.TabStop = true;
+            rb_withBuilder.Text = "С Паттерном";
+            rb_withBuilder.UseVisualStyleBackColor = true;
+            // 
+            // rb_withoutBuilder
+            // 
+            rb_withoutBuilder.AutoSize = true;
+            rb_withoutBuilder.Location = new Point(21, 258);
+            rb_withoutBuilder.Name = "rb_withoutBuilder";
+            rb_withoutBuilder.Size = new Size(97, 19);
+            rb_withoutBuilder.TabIndex = 12;
+            rb_withoutBuilder.TabStop = true;
+            rb_withoutBuilder.Text = "Без Паттерна";
+            rb_withoutBuilder.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(304, 345);
+            Controls.Add(rb_withoutBuilder);
+            Controls.Add(rb_withBuilder);
             Controls.Add(btn_Build);
             Controls.Add(lbl_area);
             Controls.Add(nud_HouseWidth);
@@ -164,5 +190,7 @@
         private NumericUpDown nud_HouseWidth;
         private Label lbl_area;
         private Button btn_Build;
+        private RadioButton rb_withBuilder;
+        private RadioButton rb_withoutBuilder;
     }
 }

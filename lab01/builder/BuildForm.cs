@@ -44,7 +44,7 @@ namespace builder
             base.OnPaint(e);
             Graphics g = e.Graphics;
             g.FillRectangle(_grassBrush, 0, 0, this.Width, this.Height);
-            int padding = 50;
+            int padding = 80;
             int baseX = padding;
             int baseY = padding;
             int widthPx = (int)(_house.Width * _scale);
