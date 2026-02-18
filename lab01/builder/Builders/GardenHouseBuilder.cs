@@ -8,22 +8,11 @@ using System.Threading.Tasks;
 
 namespace builder.Builders
 {
-    public class GardenHouseBuilder : IHouseBuilder
+    public class GardenHouseBuilder : BaseHouseBuilder
     {
-        private House _house = new House();
-        public void BuildBase(double width, double length, string material)
-        {
-            _house.Width = width;
-            _house.Length = length;
-            _house.WallMaterial = material;
-        }
-        public void AddExtras()
+        public override void AddExtras()
         {
             _house.HasGarden = true;
-            _house.HasPool = false;
-            _house.HasGarage = false;
-            _house.HasStatue = false;
         }
-        public House GetResult() => _house;
     }
 }

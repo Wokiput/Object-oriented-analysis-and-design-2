@@ -7,22 +7,14 @@ using System.Threading.Tasks;
 
 namespace builder.Builders
 {
-    public class FancyHouseBuilder : IHouseBuilder
+    public class FancyHouseBuilder : BaseHouseBuilder
     {
-        private House _house = new House();
-        public void BuildBase(double width, double length, string material)
-        {
-            _house.Width = width;
-            _house.Length = length;
-            _house.WallMaterial = material;
-        }
-        public void AddExtras()
+        public override void AddExtras()
         {
             _house.HasGarden = true;
             _house.HasGarage = true;
             _house.HasPool = true;
             _house.HasStatue = true;
         }
-        public House GetResult() => _house;
     }
 }
