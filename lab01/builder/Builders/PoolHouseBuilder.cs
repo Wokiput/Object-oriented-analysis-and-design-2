@@ -9,9 +9,10 @@ namespace builder.Builders
 {
     public class PoolHouseBuilder : BaseHouseBuilder
     {
-        public override void AddExtras()
+        AddExtras();
+    }
+    public override void AddExtras()
         {
             _house.HasPool = true;
         }
-    }
 }
