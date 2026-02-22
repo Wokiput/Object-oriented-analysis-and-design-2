@@ -9,6 +9,13 @@ namespace builder.Builders
 {
     public class PoorHouseBuilder : BaseHouseBuilder
     {
-        public override void AddExtras() { }
+        private PoorHouse _house = new PoorHouse();
+        public override void BuildBase(double width, double length, string material)
+        {
+            _house.Width = width;
+            _house.Length = length;
+            _house.WallMaterial = material;
+        }
+        public PoorHouse GetHouse() => _house;
     }
 }

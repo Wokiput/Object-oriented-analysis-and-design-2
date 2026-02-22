@@ -9,9 +9,18 @@ namespace builder.Builders
 {
     public class PoolHouseBuilder : BaseHouseBuilder
     {
-        public override void AddExtras()
+        private PoolHouse _house = new PoolHouse();
+        public override void BuildBase(double width, double length, string material)
         {
-            _house.HasPool = true;
+            _house.Width = width;
+            _house.Length = length;
+            _house.WallMaterial = material;
         }
+        public void SetPoolParams(double w, double l)
+        {
+            _house.PoolWidth = w;
+            _house.PoolLength = l;
+        }
+        public PoolHouse GetHouse() => _house;
     }
 }

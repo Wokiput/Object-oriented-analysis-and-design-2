@@ -17,3 +17,4 @@ C:\Users\tupik\source\repos\Object-oriented-analysis-and-design-2\lab01\builder\
 C:\Users\tupik\source\repos\Object-oriented-analysis-and-design-2\lab01\builder\obj\Debug\net8.0-windows\builder.genruntimeconfig.cache
 C:\Users\tupik\source\repos\Object-oriented-analysis-and-design-2\lab01\builder\obj\Debug\net8.0-windows\ref\builder.dll
 C:\Users\tupik\source\repos\Object-oriented-analysis-and-design-2\lab01\builder\obj\Debug\net8.0-windows\builder.BuildForm.resources
+C:\Users\tupik\source\repos\Object-oriented-analysis-and-design-2\lab01\builder\obj\Debug\net8.0-windows\builder.OptionsForm.resources

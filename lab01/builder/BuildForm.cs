@@ -17,72 +17,124 @@ namespace builder
 {
     public partial class BuildForm : Form
     {
-        private House _house;
-        private double _scale = 20;
-        private TextureBrush _concreteBrush;
-        private TextureBrush _brickBrush;
-        private TextureBrush _woodBrush;
-        private TextureBrush _grassBrush;
+        private readonly BaseHouse _house;
+        private readonly double _scale = 20;
+        private readonly TextureBrush _concreteBrush;
+        private readonly TextureBrush _brickBrush;
+        private readonly TextureBrush _woodBrush;
+        private readonly TextureBrush _grassBrush;
 
-        public BuildForm(House house)
+        public BuildForm(BaseHouse house)
         {
             InitializeComponent();
             DoubleBuffered = true;
-            this.SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint | ControlStyles.OptimizedDoubleBuffer, true);
+            this.Text = "Визуализация и смета";
+            this.Size = new Size(1000, 800);
             _house = house;
-            _brickBrush = new TextureBrush(Properties.Resources.bricktexture);
-            _brickBrush.WrapMode = WrapMode.Tile;
-            _woodBrush = new TextureBrush(Properties.Resources.woodtexture);
-            _woodBrush.WrapMode = WrapMode.Tile;
-            _grassBrush = new TextureBrush(Properties.Resources.grasstexture);
-            _grassBrush.WrapMode= WrapMode.Tile;
-            _concreteBrush = new TextureBrush(Properties.Resources.concretetexture);
-            _concreteBrush.WrapMode = WrapMode.Tile;
+            _brickBrush = new TextureBrush(Properties.Resources.bricktexture) { WrapMode = WrapMode.Tile };
+            _woodBrush = new TextureBrush(Properties.Resources.woodtexture) { WrapMode = WrapMode.Tile };
+            _grassBrush = new TextureBrush(Properties.Resources.grasstexture) { WrapMode = WrapMode.Tile };
+            _concreteBrush = new TextureBrush(Properties.Resources.concretetexture) { WrapMode = WrapMode.Tile };
+            Button btnEstimate = new Button
+            {
+                Text = "Рассчитать смету",
+                Location = new Point(10, 10),
+                Size = new Size(120, 40),
+                BackColor = Color.White
+            };
+            btnEstimate.Click += BtnEstimate_Click;
+            this.Controls.Add(btnEstimate);
         }    
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
             Graphics g = e.Graphics;
-            g.FillRectangle(_grassBrush, 0, 0, this.Width, this.Height);
-            int padding = 80;
-            int baseX = padding;
-            int baseY = padding;
-            int widthPx = (int)(_house.Width * _scale);
-            int lengthPx = (int)(_house.Length * _scale);
-            TextureBrush wallBrush = _woodBrush;
-            switch (_house.WallMaterial)
+            g.SmoothingMode = SmoothingMode.AntiAlias;
+            g.FillRectangle(_grassBrush, this.ClientRectangle);
+            double wallThicknessM = _house.WallMaterial switch
             {
-                case "Brick": wallBrush = _brickBrush; break;
-                case "Wood": wallBrush = _woodBrush; break;
-                case "Concrete": wallBrush = _concreteBrush; break;
+                "Wood" => 0.15,
+                "Brick" => 0.51,
+                "Concrete" => 0.4,
+                _ => 0.2
+            };
+            int startX = 400; int startY = 300;
+            int wPx = (int)(_house.Width * _scale);
+            int lPx = (int)(_house.Length * _scale);
+            int tPx = (int)(wallThicknessM * _scale);
+            Rectangle houseRect = new Rectangle(startX, startY, wPx, lPx);
+            TextureBrush wallBrush = GetWallBrush(_house.WallMaterial);
+            if (_house is GardenHouse || _house is FancyHouse)
+            {
+                bool hasGarage = _house is FancyHouse;
+                double gardenWidthM = 0.5;
+                int gPx = (int)(gardenWidthM * _scale);
+                Rectangle gardenRect = new Rectangle(startX-gPx, startY-gPx, wPx + 2*gPx, lPx + 2*gPx);
+                g.FillRectangle(Brushes.Green, gardenRect);
             }
-            Rectangle houseRect = new Rectangle(baseX, baseY, widthPx, lengthPx);
             g.FillRectangle(wallBrush, houseRect);
-            Pen borderPen = new Pen(Color.Black, 4);
-            g.DrawRectangle(borderPen, houseRect);
-            int margin = 20;
-            if (_house.HasPool) 
+            Rectangle innerRect = new Rectangle(startX + tPx, startY + tPx, wPx - 2 * tPx, lPx - 2 * tPx);
+            g.FillRectangle(Brushes.LightGray, innerRect);
+            g.DrawRectangle(Pens.Black, houseRect);
+            g.DrawRectangle(Pens.Black, innerRect);
+            if (_house is GarageHouse gh) DrawGarage(g, houseRect, gh.GarageWidth, gh.GarageLength);
+            if (_house is FancyHouse fh)
             {
-                Rectangle poolRect = new Rectangle(baseX - 100 - margin, baseY + lengthPx / 2 - 15, 100, 30);
-                g.FillRectangle(Brushes.LightBlue, poolRect);
-                g.DrawRectangle(Pens.Blue, poolRect);
+                DrawGarage(g, houseRect, fh.GarageWidth, fh.GarageLength);
+                DrawPool(g, houseRect, fh.PoolWidth, fh.PoolLength);
+                DrawStatue(g, houseRect);
             }
-            if (_house.HasGarage)
+            if (_house is PoolHouse ph) DrawPool(g, houseRect, ph.PoolWidth, ph.PoolLength);
+        }
+        private void DrawGarage(Graphics g, Rectangle house, double w, double l)
+        {
+            int gw = (int)(w * _scale);
+            int gl = (int)(l * _scale);
+            Rectangle rect = new Rectangle(house.Right, house.Y, gw, gl);
+            g.FillRectangle(_concreteBrush, rect);
+            g.DrawRectangle(Pens.Black, rect);
+        }
+        private void DrawPool(Graphics g, Rectangle house, double w, double l)
+        {
+            int pw = (int)(w * _scale);
+            int pl = (int)(l * _scale);
+            int dist = (int)(2 * _scale);
+            Rectangle rect = new Rectangle(house.X - pw - dist, house.Y, pw, pl);
+            g.FillRectangle(Brushes.SkyBlue, rect);
+            g.DrawRectangle(Pens.Blue, rect);
+        }
+        private void DrawStatue(Graphics g, Rectangle house)
+        {
+            g.FillEllipse(_concreteBrush, house.X + house.Width / 2 - 10, house.Bottom + 20, 20, 20);
+        }
+        private TextureBrush GetWallBrush(string material) => material switch
+        {
+            "Brick" => _brickBrush,
+            "Wood" => _woodBrush,
+            _ => _concreteBrush
+        };
+        private void BtnEstimate_Click(object sender, EventArgs e)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("====Смета проекта====");
+            double thickness = _house.WallMaterial switch { "Wood" => 0.15, "Brick" => 0.51, "Concrete" => 0.4, _ => 0.2 };
+            double wallVolume = ((_house.Width + _house.Length) * 2) * 3 * thickness;
+            sb.AppendLine($"Материал стен: {_house.WallMaterial}");
+            sb.AppendLine($"Объём материалов стен: {wallVolume:F2}м^3");
+            if (_house is PoolHouse ph)
+                sb.AppendLine($"Объём бассейна (глубина 1.5м): {ph.PoolWidth * ph.PoolLength * 1.5:F2}м^3");
+            if (_house is GardenHouse gnh)
+                sb.AppendLine($"Тип сада: {gnh.GardenType}");
+            if (_house is GarageHouse gh)
+                sb.AppendLine($"Площадь гаража: {gh.GarageWidth * gh.GarageLength:F2}м^2");
+            if (_house is FancyHouse fh)
             {
-                Rectangle garageRect = new Rectangle(baseX + widthPx + margin, baseY + lengthPx / 2 - 30, 80, 60);
-                g.FillRectangle(Brushes.DarkGray, garageRect);
-                g.DrawRectangle(Pens.Black, garageRect);
+                sb.AppendLine($"Объём бассейна (глубина 1.5м): {fh.PoolWidth * fh.PoolLength * 1.5:F2}м^3");
+                sb.AppendLine($"Тип сада: {fh.GardenType}");
+                sb.AppendLine($"Площадь гаража: {fh.GarageWidth * fh.GarageLength:F2}м^2");
+                sb.AppendLine($"Тип статуи: {fh.StatueType}");
             }
-            if (_house.HasGarden) 
-            {
-                Rectangle gardenRect = new Rectangle(baseX + widthPx / 2 - 30, baseY - 50 - margin, 60, 60);
-                g.FillEllipse(Brushes.Green, gardenRect);
-            }
-            if (_house.HasStatue)
-            {
-                Rectangle poolRect = new Rectangle(baseX + widthPx / 2 - 20, baseY + lengthPx + margin, 40, 40);
-                g.FillEllipse(Brushes.LightGray, poolRect);
-            }
+            MessageBox.Show( sb.ToString(), "Результат расчётов");
         }
     }
 }

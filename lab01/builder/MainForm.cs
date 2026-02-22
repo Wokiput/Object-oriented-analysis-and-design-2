@@ -12,24 +12,24 @@ namespace builder
         }
         private void MainForm_Load(object sender, EventArgs e)
         {
-            cmb_HouseType.Items.AddRange(new string[] {
+            cB_HouseType.Items.AddRange(new string[] {
                "PoorHouse",
                "PoolHouse",
                "GarageHouse",
                "GardenHouse",
                "FancyHouse" });
-            cmb_HouseType.SelectedIndex = 0;
-            cmb_WallMaterial.Items.AddRange(new string[] {
+            cB_HouseType.SelectedIndex = 0;
+            cB_WallMaterial.Items.AddRange(new string[] {
                 "Brick",
                 "Wood",
                 "Concrete" });
-            cmb_WallMaterial.SelectedIndex = 0;
-            nud_HouseLength.Minimum = 5;
-            nud_HouseLength.Maximum = 30;
-            nud_HouseLength.Value = 10;
-            nud_HouseWidth.Minimum = 2;
-            nud_HouseWidth.Maximum = 10;
-            nud_HouseWidth.Value = 3;
+            cB_WallMaterial.SelectedIndex = 0;
+            nUD_HouseLength.Minimum = 5;
+            nUD_HouseLength.Maximum = 30;
+            nUD_HouseLength.Value = 10;
+            nUD_HouseWidth.Minimum = 2;
+            nUD_HouseWidth.Maximum = 10;
+            nUD_HouseWidth.Value = 3;
             rb_withBuilder.Checked = true;
             rb_withoutBuilder.Checked = false;
             UpdateArea();
@@ -40,73 +40,81 @@ namespace builder
         }
         private void UpdateArea()
         {
-            double length = (double)nud_HouseLength.Value;
-            double width = (double)nud_HouseWidth.Value;
+            double length = (double)nUD_HouseLength.Value;
+            double width = (double)nUD_HouseWidth.Value;
             double area = length * width;
-            lbl_area.Text = $"Площадь: {area:F2} м²";
         }
         private void btn_Build_Click(object sender, EventArgs e)
         {
-            string type = cmb_HouseType.SelectedItem.ToString();
-            string material = cmb_WallMaterial.SelectedItem.ToString();
-            double length = (double)nud_HouseLength.Value;
-            double width = (double)nud_HouseWidth.Value;
-            House currentHouse;
-            if (rb_withBuilder.Checked)
+            string type = cB_HouseType.SelectedItem.ToString();
+            string material = cB_WallMaterial.SelectedItem.ToString();
+            double length = (double)nUD_HouseLength.Value;
+            double width = (double)nUD_HouseWidth.Value;
+            using (var optForm = new OptionsForm(type))
             {
-                IHouseBuilder builder;
-                switch (type)
+                if (optForm.ShowDialog() == DialogResult.OK)
                 {
-                    case "FancyHouse": builder = new FancyHouseBuilder(); break;
-                    case "PoolHouse": builder = new PoolHouseBuilder(); break;
-                    case "GardenHouse": builder = new GardenHouseBuilder(); break;
-                    case "GarageHouse": builder = new GarageHouseBuilder(); break;
-                    default: builder = new PoorHouseBuilder(); break;
+                    BaseHouse currentHouse = null;
+                    if (rb_withBuilder.Checked)
+                    {
+                        BaseHouseBuilder builder;
+                        switch (type)
+                        {
+                            case "FancyHouse":
+                                var fhb = new FancyHouseBuilder();
+                                fhb.SetGarageParams(optForm.GarageWidth, optForm.GarageLength);
+                                fhb.SetPoolParams(optForm.PoolWidth, optForm.PoolLength);
+                                fhb.SetGardenType(optForm.GardenType);
+                                fhb.SetStatueType(optForm.StatueType);
+                                builder = fhb;
+                                break;
+                            case "PoolHouse":
+                                var phb = new PoolHouseBuilder();
+                                phb.SetPoolParams(optForm.PoolWidth, optForm.PoolLength);
+                                builder = phb;
+                                break;
+                            case "GardenHouse":
+                                var garhb = new GardenHouseBuilder();
+                                garhb.SetGardenType(optForm.GardenType);
+                                builder = garhb;
+                                break;
+                            case "GarageHouse":
+                                var ghb = new GarageHouseBuilder();
+                                ghb.SetGarageParams(optForm.GarageWidth, optForm.GarageLength);
+                                builder = ghb;
+                                break;
+                            default: builder = new PoorHouseBuilder(); break;
+                        }
+                        Director director = new Director();
+                        director.Construct(builder, length, width, material);
+                        if (builder is PoolHouseBuilder p) currentHouse = p.GetHouse();
+                        else if (builder is GarageHouseBuilder g) currentHouse = g.GetHouse();
+                        else if (builder is GardenHouseBuilder gar) currentHouse = gar.GetHouse();
+                        else if (builder is FancyHouseBuilder f) currentHouse = f.GetHouse();
+                        else if (builder is PoorHouseBuilder po) currentHouse = po.GetHouse();
+                    }
+                    else
+                    {
+                        currentHouse = CreateHouseWithoutBuilder(type, length, width, material, optForm);
+                    }
+                    if (currentHouse != null)
+                    {
+                        BuildForm buildForm = new BuildForm(currentHouse);
+                        buildForm.Show();
+                    }
                 }
-                Director director = new Director();
-                director.Construct(builder, length, width, material);
-                currentHouse = builder.GetResult();
             }
-            else
+        }
+        private BaseHouse CreateHouseWithoutBuilder(string type, double l, double w, string mat, OptionsForm optForm)
+        {
+            return type switch
             {
-                currentHouse = new House
-                {
-                    Width = width,
-                    Length = length,
-                    WallMaterial = material
-                };
-                switch (type)
-                {
-                    case "FancyHouse":
-                        currentHouse.HasPool = true;
-                        currentHouse.HasGarage = true;
-                        currentHouse.HasGarden = true;
-                        currentHouse.HasStatue = true;
-                        break;
-                    case "PoolHouse":
-                        currentHouse.HasPool = true;
-                        currentHouse.HasGarage = false;
-                        currentHouse.HasGarden = false;
-                        currentHouse.HasStatue = false;
-                        break;
-                    case "GardenHouse":
-                        currentHouse.HasPool = false;
-                        currentHouse.HasGarage = false;
-                        currentHouse.HasGarden = true;
-                        currentHouse.HasStatue = false;
-                        break;
-                    case "GarageHouse":
-                        currentHouse.HasPool = false;
-                        currentHouse.HasGarage = true;
-                        currentHouse.HasGarden = false;
-                        currentHouse.HasStatue = false;
-                        break;
-                    default:
-                        break;
-                }
-            }
-            BuildForm buildform = new BuildForm(currentHouse);
-            buildform.Show();
+                "PoolHouse" => new PoolHouse { Length = l, Width = w, WallMaterial = mat, PoolWidth = optForm.PoolWidth, PoolLength = optForm.PoolLength },
+                "GarageHouse" => new GarageHouse { Length = l, Width = w, WallMaterial = mat, GarageLength = optForm.GarageLength, GarageWidth = optForm.GarageWidth },
+                "GardenHouse" => new GardenHouse { Length = l, Width = w, WallMaterial = mat, GardenType = optForm.GardenType},
+                "FancyHouse" => new FancyHouse { Length = l, Width = w, WallMaterial = mat, GardenType = optForm.GardenType, GarageLength = optForm.GarageLength, GarageWidth = optForm.GarageWidth, PoolLength = optForm.PoolLength, PoolWidth = optForm.PoolWidth, StatueType = optForm.StatueType },
+                _ => new PoorHouse { Length = l, Width = w, WallMaterial = mat}
+            };
         }
     }
 }

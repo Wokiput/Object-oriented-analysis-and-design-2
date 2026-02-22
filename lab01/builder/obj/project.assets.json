@@ -8,28 +8,25 @@
     "net8.0-windows7.0": []
   },
   "packageFolders": {
-    "C:\\Users\\st22.026\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
-    "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\": {}
+    "C:\\Users\\tupik\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\st22.026\\Source\\Repos\\Object-oriented-analysis-and-design-2\\lab01\\builder\\builder.csproj",
+      "projectUniqueName": "C:\\Users\\tupik\\source\\repos\\Object-oriented-analysis-and-design-2\\lab01\\builder\\builder.csproj",
       "projectName": "builder",
-      "projectPath": "C:\\Users\\st22.026\\Source\\Repos\\Object-oriented-analysis-and-design-2\\lab01\\builder\\builder.csproj",
-      "packagesPath": "C:\\Users\\st22.026\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\st22.026\\Source\\Repos\\Object-oriented-analysis-and-design-2\\lab01\\builder\\obj\\",
+      "projectPath": "C:\\Users\\tupik\\source\\repos\\Object-oriented-analysis-and-design-2\\lab01\\builder\\builder.csproj",
+      "packagesPath": "C:\\Users\\tupik\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\tupik\\source\\repos\\Object-oriented-analysis-and-design-2\\lab01\\builder\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-        "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "H:\\AppData\\NuGet\\NuGet.Config",
+        "C:\\Users\\tupik\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net8.0-windows"
@@ -79,7 +76,7 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.310/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

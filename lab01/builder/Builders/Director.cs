@@ -8,10 +8,9 @@ namespace builder.Builders
 {
     public class Director
     {
-        public void Construct(IHouseBuilder builder, double length, double width, string material)
+        public void Construct(BaseHouseBuilder builder, double length, double width, string material)
         {
-            builder.BuildBase(length, width, material);
-            builder.AddExtras();
+            builder.BuildBase(width, length, material);
         }
     }
 }

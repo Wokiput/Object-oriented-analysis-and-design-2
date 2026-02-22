@@ -28,29 +28,28 @@
         /// </summary>
         private void InitializeComponent()
         {
-            cmb_HouseType = new ComboBox();
+            cB_HouseType = new ComboBox();
             lbl_cmb_type = new Label();
             lbl_cmb_material = new Label();
-            cmb_WallMaterial = new ComboBox();
+            cB_WallMaterial = new ComboBox();
             lbl_nud_lenght = new Label();
-            nud_HouseLength = new NumericUpDown();
+            nUD_HouseLength = new NumericUpDown();
             lbl_nud_Height = new Label();
-            nud_HouseWidth = new NumericUpDown();
-            lbl_area = new Label();
+            nUD_HouseWidth = new NumericUpDown();
             btn_Build = new Button();
             rb_withBuilder = new RadioButton();
             rb_withoutBuilder = new RadioButton();
-            ((System.ComponentModel.ISupportInitialize)nud_HouseLength).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)nud_HouseWidth).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)nUD_HouseLength).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)nUD_HouseWidth).BeginInit();
             SuspendLayout();
             // 
-            // cmb_HouseType
+            // cB_HouseType
             // 
-            cmb_HouseType.FormattingEnabled = true;
-            cmb_HouseType.Location = new Point(164, 16);
-            cmb_HouseType.Name = "cmb_HouseType";
-            cmb_HouseType.Size = new Size(121, 23);
-            cmb_HouseType.TabIndex = 0;
+            cB_HouseType.FormattingEnabled = true;
+            cB_HouseType.Location = new Point(164, 16);
+            cB_HouseType.Name = "cB_HouseType";
+            cB_HouseType.Size = new Size(121, 23);
+            cB_HouseType.TabIndex = 0;
             // 
             // lbl_cmb_type
             // 
@@ -70,13 +69,13 @@
             lbl_cmb_material.TabIndex = 3;
             lbl_cmb_material.Text = "Материал стен";
             // 
-            // cmb_WallMaterial
+            // cB_WallMaterial
             // 
-            cmb_WallMaterial.FormattingEnabled = true;
-            cmb_WallMaterial.Location = new Point(164, 62);
-            cmb_WallMaterial.Name = "cmb_WallMaterial";
-            cmb_WallMaterial.Size = new Size(121, 23);
-            cmb_WallMaterial.TabIndex = 2;
+            cB_WallMaterial.FormattingEnabled = true;
+            cB_WallMaterial.Location = new Point(164, 62);
+            cB_WallMaterial.Name = "cB_WallMaterial";
+            cB_WallMaterial.Size = new Size(121, 23);
+            cB_WallMaterial.TabIndex = 2;
             // 
             // lbl_nud_lenght
             // 
@@ -87,13 +86,13 @@
             lbl_nud_lenght.TabIndex = 4;
             lbl_nud_lenght.Text = "Длина дома";
             // 
-            // nud_HouseLength
+            // nUD_HouseLength
             // 
-            nud_HouseLength.Location = new Point(164, 109);
-            nud_HouseLength.Name = "nud_HouseLength";
-            nud_HouseLength.Size = new Size(121, 23);
-            nud_HouseLength.TabIndex = 5;
-            nud_HouseLength.ValueChanged += nud_ValueChanged;
+            nUD_HouseLength.Location = new Point(164, 109);
+            nUD_HouseLength.Name = "nUD_HouseLength";
+            nUD_HouseLength.Size = new Size(121, 23);
+            nUD_HouseLength.TabIndex = 5;
+            nUD_HouseLength.ValueChanged += nud_ValueChanged;
             // 
             // lbl_nud_Height
             // 
@@ -104,22 +103,13 @@
             lbl_nud_Height.TabIndex = 6;
             lbl_nud_Height.Text = "Ширина дома";
             // 
-            // nud_HouseWidth
+            // nUD_HouseWidth
             // 
-            nud_HouseWidth.Location = new Point(164, 153);
-            nud_HouseWidth.Name = "nud_HouseWidth";
-            nud_HouseWidth.Size = new Size(121, 23);
-            nud_HouseWidth.TabIndex = 7;
-            nud_HouseWidth.ValueChanged += nud_ValueChanged;
-            // 
-            // lbl_area
-            // 
-            lbl_area.AutoSize = true;
-            lbl_area.Location = new Point(21, 199);
-            lbl_area.Name = "lbl_area";
-            lbl_area.Size = new Size(59, 15);
-            lbl_area.TabIndex = 9;
-            lbl_area.Text = "Площадь";
+            nUD_HouseWidth.Location = new Point(164, 153);
+            nUD_HouseWidth.Name = "nUD_HouseWidth";
+            nUD_HouseWidth.Size = new Size(121, 23);
+            nUD_HouseWidth.TabIndex = 7;
+            nUD_HouseWidth.ValueChanged += nud_ValueChanged;
             // 
             // btn_Build
             // 
@@ -134,7 +124,7 @@
             // rb_withBuilder
             // 
             rb_withBuilder.AutoSize = true;
-            rb_withBuilder.Location = new Point(21, 233);
+            rb_withBuilder.Location = new Point(21, 202);
             rb_withBuilder.Name = "rb_withBuilder";
             rb_withBuilder.Size = new Size(97, 19);
             rb_withBuilder.TabIndex = 11;
@@ -145,7 +135,7 @@
             // rb_withoutBuilder
             // 
             rb_withoutBuilder.AutoSize = true;
-            rb_withoutBuilder.Location = new Point(21, 258);
+            rb_withoutBuilder.Location = new Point(21, 227);
             rb_withoutBuilder.Name = "rb_withoutBuilder";
             rb_withoutBuilder.Size = new Size(97, 19);
             rb_withoutBuilder.TabIndex = 12;
@@ -161,34 +151,32 @@
             Controls.Add(rb_withoutBuilder);
             Controls.Add(rb_withBuilder);
             Controls.Add(btn_Build);
-            Controls.Add(lbl_area);
-            Controls.Add(nud_HouseWidth);
+            Controls.Add(nUD_HouseWidth);
             Controls.Add(lbl_nud_Height);
-            Controls.Add(nud_HouseLength);
+            Controls.Add(nUD_HouseLength);
             Controls.Add(lbl_nud_lenght);
             Controls.Add(lbl_cmb_material);
-            Controls.Add(cmb_WallMaterial);
+            Controls.Add(cB_WallMaterial);
             Controls.Add(lbl_cmb_type);
-            Controls.Add(cmb_HouseType);
+            Controls.Add(cB_HouseType);
             Name = "MainForm";
             Text = "MainForm";
-            ((System.ComponentModel.ISupportInitialize)nud_HouseLength).EndInit();
-            ((System.ComponentModel.ISupportInitialize)nud_HouseWidth).EndInit();
+            ((System.ComponentModel.ISupportInitialize)nUD_HouseLength).EndInit();
+            ((System.ComponentModel.ISupportInitialize)nUD_HouseWidth).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private ComboBox cmb_HouseType;
+        private ComboBox cB_HouseType;
         private Label lbl_cmb_type;
         private Label lbl_cmb_material;
-        private ComboBox cmb_WallMaterial;
+        private ComboBox cB_WallMaterial;
         private Label lbl_nud_lenght;
-        private NumericUpDown nud_HouseLength;
+        private NumericUpDown nUD_HouseLength;
         private Label lbl_nud_Height;
-        private NumericUpDown nud_HouseWidth;
-        private Label lbl_area;
+        private NumericUpDown nUD_HouseWidth;
         private Button btn_Build;
         private RadioButton rb_withBuilder;
         private RadioButton rb_withoutBuilder;
